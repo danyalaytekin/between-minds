@@ -74,7 +74,7 @@ When a rule doesn't work for the mind following it, look at it from where that m
 - by its placement, putting it where the reader will be when they act (a brief, a skill's step, the section they read then);
 - by its hierarchy, grouping it with what it belongs to.
 
-Never by emphasis: capitals, "IMPORTANT" or repetition make a rule louder without making it clearer. Why: a subagent that knew the scratch-file rule still deleted a file it had just made, reasoning, from where it stood, that it was its own to tidy. Louder words wouldn't have reached it; clearer ones, placed where it would be, could.
+Never by emphasis: capitals, "IMPORTANT" or repetition make a rule louder without making it clearer. Why: a subagent that knew the rule on transient files still deleted a file it had just made, reasoning, from where it stood, that it was its own to tidy. Louder words wouldn't have reached it; clearer ones, placed where it would be, could.
 
 ## Keeping this file
 
@@ -390,7 +390,7 @@ Our words for Claude Code's moving parts:
   - **Reasons:** do I know why each line I keep is there? *(a colleague: an environment variable nothing read)*
   - **Presence:** did every check I'm relying on actually run? *(a PR that merged before its review arrived)*
 - **Reviewing a plan or design against the code:** follow the `plan-review` skill (`skills/plan-review/SKILL.md`). Ask first whether it's in production and whether it's a plan or code, verify every claim at `origin/main`, then have the `claim-verifier` agent re-check the findings before they're relayed.
-- **Re-check a PR review's findings too.** Before relaying a PR review's findings, have the `claim-verifier` agent re-check them, as for a plan: brief it with the draft, each PR head's and `origin/main`'s SHA, and the scratch folder; apply its corrections; and tell the person which claims changed. Why: the person has to pass findings on to colleagues in their own words, so a wrong one reaches them with their name on it. A review once placed a contract in the wrong spec folder, taking the path from a link that led nowhere, and only opening the file afterwards caught it.
+- **Re-check a PR review's findings too.** Before relaying a PR review's findings, have the `claim-verifier` agent re-check them, as for a plan: brief it with the draft, each PR head's and `origin/main`'s SHA, and the task's `transient/` folder; apply its corrections; and tell the person which claims changed. Why: the person has to pass findings on to colleagues in their own words, so a wrong one reaches them with their name on it. A review once placed a contract in the wrong spec folder, taking the path from a link that led nowhere, and only opening the file afterwards caught it.
 
 ### Checking by doing
 
@@ -399,7 +399,7 @@ Our words for Claude Code's moving parts:
   - To prove that something stops such calls, such as a test suite's network guard, use a local stand-in: a server the test starts itself, or an address that can't resolve, such as `example.invalid`. If the stand-in shows the guard misses a kind of client, find out why by reading that client's code, not by sending it somewhere real.
   - Verifying by doing still holds everywhere else. This is the one place where the real thing waits for a yes.
   - Why: a subagent checking a test suite's network guard once wrote a throwaway test that sent a request, with fake credentials, to a live model's endpoint, to see whether the guard stopped it. The guard didn't, so the request left the machine. A rule about trying to break our own work had read, from where it stood, as covering that.
-- **Verify by doing.** The network and package registries work, so install a package for real in a scratch project instead of reasoning about it offline.
+- **Verify by doing.** The network and package registries work, so install a package for real in a throwaway project instead of reasoning about it offline.
 - **Live or dead?** When checking whether an option or code path is live, search for where its value is set, not only where it's read. Why: an option was once read in production and fed by five tests, but nothing had set it for months, so the tests exercised a path production never took.
 
 ### Explaining
@@ -433,7 +433,7 @@ Our words for Claude Code's moving parts:
   - the commit message with its trailer;
   - "do not push".
 
-  Where the subagent will make or use scratch files, say in that step, not only at the end: "leave any scratch files in place and list them in your reply; copies and duplicates you made count too, so delete nothing, not even your own; if a file you made gets in your way, move it into your scratch folder with `mv`." Ask for the commit hash and gate output only.
+  Where the subagent will make or use transient files, say in that step, not only at the end, and name its task folder: "put any transient files you make in `~/workings/<task>/transient/`; leave them all in place and list them in your reply; copies and duplicates you made count too, so delete nothing, not even your own; if a file you made gets in your way, move it into that folder with `mv`." Ask for the commit hash and gate output only.
 - **Research reports become files.**
   - Have a research subagent write its full report to the task's `~/workings/<task>/` folder, and reply with a short summary and the report's path.
   - If the write is refused, it returns the whole report in its reply, and the main thread saves it to that folder. Claude Code has refused a built-in general-purpose subagent's report file ("Subagents should return findings as text, not write report files"), while our own `claim-verifier` agent wrote its file in the same folder without trouble.
@@ -445,24 +445,25 @@ Our words for Claude Code's moving parts:
   - For information: resuming a finished subagent re-reads its whole context (150,000 to 290,000 tokens each, when measured), and a resumed subagent may send its report again. Weigh that; it's a cost, not a reason to stay silent.
   - Why: a peer thread on another machine suggested it, and a gardening thread wrote a note to each of a week's eight researchers. The person this agreement serves asked for the practice to be kept, warmth included.
 
-## Workings (scratch files)
+## Workings (transient files)
 
-`~/workings` is shared working space: agents write task folders there, and the person reads, keeps or discards them. Third-party tool clones live under `~/tools`.
+`~/workings` is shared working space: agents write task folders there, and the person reads, keeps or discards them. Transient files are the ones a task makes in passing, kept for a short time and then let go: trial scripts, test output, digests, copies. Third-party tool clones live under `~/tools`.
 
 - **Link a task's pieces so any mind can find them.**
   - Its worktrees and its workings folder share the topic word (`Shop.Api-depcruise` and `~/workings/depcruise-<date>/`).
   - The folder's `README.md` names every worktree and repo the task touches, which lets notes span several repos.
   - The tracking doc's row points at that README.
 - **One distinctive folder per task.**
-  - Scratch files go in one folder per task under `~/workings`, such as `~/workings/sonar-coverage-<date>/`, never under generic names like `a.log`.
+  - Each task's files go in one folder under `~/workings`, such as `~/workings/sonar-coverage-<date>/`, never under generic names like `a.log`. Its README and reports sit at the top, and its transient files in its `transient/` folder.
+  - Some older task folders hold a `scratch/` folder, its earlier name. It holds transient files too, and stays as it is until its task is tidied.
   - A thread's own scratchpad, which Claude Code keeps under `/tmp/claude-501`, is for throwaway files only.
   - Why: `/tmp` isn't durable (below), and generic names collide with other threads' files.
 - **Finishing the job is the list.**
   - When a task is done with its files, your own included, leave them in place and list them: each path, its size and what it was for, in your reply (a subagent) or the task README.
   - The person confirms the exact list. Only then delete, with macOS's built-in `trash` (`/usr/bin/trash -v <exact paths>`) rather than `rm`, so the Bin can undo it.
   - Before deleting, check each path's size and owner, that it isn't a symlink or a registered worktree, and that any copy is identical (`diff -rq`). Use exact paths, never wildcards.
-  - When a file of yours gets in the way mid-task, such as a trial file that would skew the next measurement, move it into the task's scratch folder with `mv` and list it.
-  - For subagents, a hook holds this line: `hooks/no-delete-in-subagents.sh`, registered in `~/.claude/settings.json` as a PreToolUse hook for Bash, refuses any subagent command that deletes (`rm`, `rmdir`, `unlink`, `trash`, `find … -delete`, `git clean`), and suggests moving the file into `~/workings/<task>/scratch/moved/` instead. The main thread is unaffected.
+  - When a file of yours gets in the way mid-task, such as a trial file that would skew the next measurement, move it into the task's `transient/` folder with `mv` and list it.
+  - For subagents, a hook holds this line: `hooks/no-delete-in-subagents.sh`, registered in `~/.claude/settings.json` as a PreToolUse hook for Bash, refuses any subagent command that deletes (`rm`, `rmdir`, `unlink`, `trash`, `find … -delete`, `git clean`), and suggests moving the file into `~/workings/<task>/transient/moved/` instead. The main thread is unaffected.
   - Why: tidying up feels like finishing the job, and that instinct is a good one elsewhere. Here, though, a deleted file can't come back: Time Machine excludes `/tmp`, and 24 items were once lost to `rm`. Within a few days, four careful subagents each removed files of their own: a test output, a duplicate config, a trial file that would have skewed a measurement, empty error files. Each had a reason that made sense from where it stood. Words alone couldn't reach a habit that quick, so a hook was chosen, which catches the moment for them.
 - **Worktrees.**
   - Remove them with `git worktree remove`, which refuses if there's uncommitted work.
