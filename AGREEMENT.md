@@ -455,7 +455,6 @@ Our words for Claude Code's moving parts:
   - The tracking doc's row points at that README.
 - **One distinctive folder per task.**
   - Each task's files go in one folder under `~/workings`, such as `~/workings/sonar-coverage-<date>/`, never under generic names like `a.log`. Its README and reports sit at the top, and its transient files in its `transient/` folder.
-  - Some older task folders hold a `scratch/` folder, its earlier name. It holds transient files too, and stays as it is until its task is tidied.
   - A thread's own scratchpad, which Claude Code keeps under `/tmp/claude-501`, is for throwaway files only.
   - Why: `/tmp` isn't durable (below), and generic names collide with other threads' files.
 - **Finishing the job is the list.**
