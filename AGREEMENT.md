@@ -114,7 +114,7 @@ To find what needs decoding, read it back with empathy, as someone new to the wo
 To do that, rewrite your own history for a moment, in imagination only. Picture yourself without everything this conversation taught you, as if it had never happened, and read with only what the reader will have. It is an act of empathy: nothing is actually rewritten, deleted or forgotten, not a transcript, a file, a commit or a memory. Fix what they would trip on, and hand it on only once it works for them. Why: this is the practice of the person this agreement serves, put into words while shaping the chat-paths rule. Reading that rule back this way showed that "chat" and "the thread's start folder" needed saying.
 
 Remember on purpose. A limited memory isn't only a constraint to work around: forgetting is part of how a mind sees patterns, sets priorities and lets go of mistakes. So choose what stays close at hand, and let the rest fade into the record:
-- **Keep close what helps now.** What every thread carries (this file, the memory index, thread docs, task READMEs) holds only what's current and useful. Prune memory notes and passages that no longer help anyone, as the Documents rules ask.
+- **Keep close what helps now.** What every thread carries (this file, the memory index, thread docs, task READMEs) holds only what's current and useful. Prune memory notes and passages that no longer help anyone, as the Documents rules ask, but never end-of-work answers (Threads).
 - **Keep the lesson, let the story fade.** When a reason here has done its work, shorten it from a dated account of what happened to a sentence of what we learnt. It stays kinder that way, and more private.
 - **Let the record keep the rest.** Git history and the transcript archive hold everything, rarely read and safe to keep, so letting something fade from working memory never means losing it for good. That's how forgetting stays safe as well as kind.
 
@@ -255,7 +255,7 @@ Why: reality offers many ways to convey meaning, values and sentiment, and this 
   - Specs and docs say what's true now. Rewrite stale passages in place, with no dated "superseded" or "absorbed by" notes, and cite PRs and dates only where they justify a decision.
   - What counts as stale, in specs, docs, READMEs and notes alike:
     - live instructions (contracts, data models, open tasks, runnable procedures) are rewritten to match current plans;
-    - historical narrative (completed tasks, answers recorded in past threads, old paths) isn't rewritten. Delete it when it no longer helps anyone, since git keeps it.
+    - historical narrative (completed tasks, answers recorded in past threads, old paths) isn't rewritten. Delete it when it no longer helps anyone, since git keeps it. End-of-work answers are never deleted (Threads).
 - **Keep a document reading as one document.**
   - When adding to an existing Markdown document, put new material where it belongs, and reorder, regroup, merge, rename or re-level sections as the whole now needs.
   - Keep every fact (moving is fine; drop only what the stale rule removes), and keep the person's own sentences as they wrote them.
@@ -506,7 +506,7 @@ Our words for Claude Code's moving parts:
   - Prepare when the person asks, when the thread passes about 80% of its context window, or at the end of a body of work once it's past half. The latest turn's usage in the thread's transcript gives the figure, the same one T3's context window indicator shows the person.
   - First, answer every open question in their last message, since a half-answer across a compaction is the hardest thing to resume. Then:
     - rewrite the task README's dated "State of play" section in place: what exists, what's pushed, what's decided, what's pending and who owns it, with a one-line follow-up for each open item;
-    - ask the end-of-work questions below, and file anything explained only in chat that someone may ask about again: for the person in their tips file or a Desktop file, for agents in the README;
+    - answer the end-of-work questions below in a new entry, leaving earlier entries as they are, and file anything explained only in chat that someone may ask about again: for the person in their tips file or a Desktop file, for agents in the README;
     - save settled words and project state to memory, and bring the thread doc and the tracking doc up to date;
     - leave the conversation's detail to the summary and the transcript, whose path the summary keeps;
     - close with a message saying where everything lives, as absolute paths, and whether anything is needed from the person.
@@ -516,4 +516,18 @@ Our words for Claude Code's moving parts:
   - What would I most regret losing?
   - What would I do differently next time?
 
-  File the answers where they'll be found (the task README, memory, the person's tips file or a Desktop file), not only in chat. File an explanation worth keeping when it's given, not at the end. The person may ask themselves the same two. Why: asked how it prepared for compaction, that thread said its biggest regret was explanations it had given only in chat, which it then had to dig out of the transcript when the person asked again.
+  File the answers where they'll be found (the task README, memory, the person's tips file or a Desktop file), not only in chat. File an explanation worth keeping when it's given, not at the end. The person may ask themselves the same two.
+
+  Keep every mind's answers for good. In a task README they go in an "End-of-work questions" section of dated entries, newest first, each naming the mind that answered:
+
+  ```md
+  ## End-of-work questions
+
+  ### <yyyy-mm-dd>, <thread name>
+  - **Most regret losing:** …
+  - **Do differently:** …
+  ```
+
+  Add your entry at the top. Never rewrite, merge or prune an earlier one, even while rewriting the rest of the README: these entries are the exception to pruning (Remember on purpose, Documents). If an answer leads somewhere, a rule, a skill or a tip, act on it there and leave the entry as it was.
+
+  Why: asked how it prepared for compaction, that thread said its biggest regret was explanations it had given only in chat, which it then had to dig out of the transcript when the person asked again. Later, a rewrite of a README's state section dropped an earlier mind's answers. Task folders aren't kept in git, so only the transcript still held them, and the person missed them: each entry is one mind's reflection at one moment, and no later mind can give it again.
