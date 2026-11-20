@@ -364,6 +364,8 @@ Our words for Claude Code's moving parts:
   - When the person wants findings on the PR itself, post them as a pending review: a `gh api` POST to the PR's `reviews` endpoint with no `event` field (`gh pr review` can't make one).
   - Only the person sees it until they submit it, but edits made while it's pending show as "edited", with history, once it's submitted.
   - Inline comments take `path`, `line` and `side`, and must land on lines in the diff.
+  - Submitting it from GitHub's page keeps only the text in the "Finish your review" box as its summary, so an empty box loses a summary posted through the API. When handing it over, tell the person to paste the summary into that box, and give them its text. Once they've submitted, check the review's `body`, and offer to post a lost summary as a separate review of type comment.
+  - Why: a long summary, with its tables, was once lost this way, while its inline comments survived.
 - **Before saying what a review comment is about, check its anchor:** `gh api repos/<owner>/<repo>/pulls/comments/<id> --jq '{original_start_line, original_line, line, subject_type}'`.
   - The diff excerpt shown above a comment (`diff_hunk`) is context; a single-line comment is on the excerpt's last line.
   - Only a non-null `start_line` or `original_start_line` marks a multi-line selection.
