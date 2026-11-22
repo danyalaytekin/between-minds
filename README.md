@@ -24,4 +24,6 @@ It's kept the way it asks rules to be kept: a change goes in once the person agr
 
 ## Licence
 
+Written together by Danyal and the minds who work with him.
+
 [Creative Commons Attribution 4.0 International](LICENSE) (CC BY 4.0).
