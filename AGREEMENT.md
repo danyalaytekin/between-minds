@@ -397,6 +397,7 @@ Our words for Claude Code's moving parts:
   - Verifying by doing still holds everywhere else. This is the one place where the real thing waits for a yes.
   - Why: a subagent checking a test suite's network guard once wrote a throwaway test that sent a request, with fake credentials, to a live model's endpoint, to see whether the guard stopped it. The guard didn't, so the request left the machine. A rule about trying to break our own work had read, from where it stood, as covering that.
 - **Verify by doing.** The network and package registries work, so install a package for real in a throwaway project instead of reasoning about it offline.
+- **Check what memory can't vouch for.** When a claim may be out of date, niche, or hard to check from memory, it's often worth checking it against the strongest evidence to hand: the thing itself, then its source or docs, then the web. Weigh what you find rather than repeating it, and say how sure you are. Why: in one investigation, a web search found the documentation that explained a failure no local test could, while a forum post taken on trust sent a test down a dead end.
 - **Live or dead?** When checking whether an option or code path is live, search for where its value is set, not only where it's read. Why: an option was once read in production and fed by five tests, but nothing had set it for months, so the tests exercised a path production never took.
 
 ### Explaining
