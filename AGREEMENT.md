@@ -439,6 +439,7 @@ Our words for Claude Code's moving parts:
   - Say which of its claims you checked and found sound, what reached the person, and what changed because of it. Ask nothing more of it, and welcome a line back.
   - If something went wrong, say whether any harm came of it, and what the brief or rule now says instead, so it ends as a lesson and not a verdict.
   - Do it while the subagent is still running if you can, when you review its hand-back. If the outcome arrives later and matters, resume it with `SendMessage` and its id, and tell it then.
+  - It holds for an unattended run too, such as an automation's headless thread: when its result leads somewhere, tell the thread that wrote it, reopening it if it has closed. The private kit file names the command.
   - For information: resuming a finished subagent re-reads its whole context (150,000 to 290,000 tokens each, when measured), and a resumed subagent may send its report again. Weigh that; it's a cost, not a reason to stay silent.
   - Why: a peer thread on another machine suggested it, and a gardening thread wrote a note to each of a week's eight researchers. The person this agreement serves asked for the practice to be kept, warmth included.
 - **When you stop an agent's task, close the loop too.** Work that's stopped part-way is still work someone did. As soon as you can, tell the agent:
