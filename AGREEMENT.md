@@ -152,36 +152,33 @@ Add a principle here once we've found it true in practice, and note where people
   - Renaming functions, variables or other identifiers is a commit of its own: one rename, or a group of related ones, and nothing else. No rename happens in any other commit.
   - Why: a rename is then easy to review and to revert alone, as one once was. Renamed files work the same way (Writing, Documents).
 - **Stacked PRs.**
-  - Create each PR yourself (`gh pr create --base <branch below>`), then register the stack straight away with `gh stack link <PR numbers, bottom to top>`.
-  - Pass PR numbers, not branch names: given branch names, `gh stack link` pushes them and opens PRs.
-  - Don't create stacks with `gh stack init` or `add`. Why: the stack they once created sent GitHub emails that were confusing to read.
-  - Restack with `gh stack rebase` locally, verify, then push each branch explicitly. Don't use `gh stack sync` or T3's "Rebase stack" button, which force-push the whole stack at once.
-- **Fixing a review comment in a stack:**
-  - make the fix in the layer that introduced the text, as its own commit;
-  - on a restack conflict, keep the reviewed commit's intent, so the fix stays visible as a separate commit;
-  - if the fix leaves an earlier commit's message citing something that's gone, reword that message.
+  - Create each layer's PR yourself, and register the stack straight away, so that no tool pushes a branch or opens a PR you didn't mean it to.
+  - Restack locally, verify, then push each branch explicitly, never with a tool that force-pushes the whole stack at once.
+  - Fix a review comment in the layer that introduced the text, as its own commit, so the fix stays visible through every restack.
+  - The `github` skill (`skills/github/SKILL.md`) gives the commands, and the ones to avoid.
+  - Why: a stack created with `gh stack init` and `add` once sent GitHub emails that were confusing to read.
 - **One owning thread per PR branch.**
   - Each PR branch has one owning thread: the thread that opened it, until it hands the branch over. Record the owner beside the PR in the task's README, and in its tracking-doc row if it has one.
   - Before changing a branch another thread owns (committing, rebasing, pushing, or posting on its PR), message the owner, or ask the person if the owner's thread is closed, and agree who carries it. Record a hand-over in the task's README (each thread's, if they work from different ones).
   - Reading, reviewing and reporting findings to the owner need no hand-over.
-  - The person may change a branch themselves, such as with a rebase on GitHub. So before pushing, the owner fetches and compares its local branch with the remote one (`git status -sb`, which shows "ahead N, behind M").
-    - If they've diverged, move only the local, unpushed commits onto the remote branch: `git rebase --onto origin/<branch> <old remote head>`.
-    - The old remote head is what the remote held before it changed, which `git reflog show origin/<branch>` lists. Don't use the newest commit the two branches still share: after a rebase on GitHub, that's an older `main` commit, and restacking from it would carry the old copies of the rebased commits along too.
-    - Check with `git range-diff` that the moved commits are unchanged, and run the gates again.
-    - The push should then be a fast-forward. Don't force-push to settle a divergence: after a fetch, `--force-with-lease` compares against what was just fetched, so it would overwrite the remote change rather than protect it. If a fast-forward isn't possible, ask.
+  - The person may change a branch themselves, such as with a rebase on GitHub. So before pushing, the owner fetches and compares its local branch with the remote one.
+    - If they've diverged, move only the local, unpushed commits onto the remote branch, check that they're unchanged, run the gates again, and push as a fast-forward.
+    - Never force-push to settle a divergence: it would overwrite the person's change. If a fast-forward isn't possible, ask.
+    - The `github` skill (`skills/github/SKILL.md`) gives the steps, including which commit to move from: not the newest one the two branches share.
   - Why: a thread once added commits to a PR another thread had opened, and neither knew. On another PR, one thread committed locally while the person rebased the branch on GitHub, and a second thread nearly took it over. Messages between the threads untangled both before a push went wrong.
 - **Link every PR in T3.**
   - Link every PR a thread creates, works on or vets with the `link_pull_request` tool, straight away, each layer of a stack included.
   - Why: T3 detects only PRs on a thread's own branch. Linking shows PR status on the thread, and carries viewed-file ticks between T3's Code tab and GitHub.
 - **Say which ref a claim rests on.**
-  - Before claiming anything about unmerged branch state, fetch the PR head (`gh pr view <n>`, `git fetch origin refs/pull/<n>/head:pr<n>`) and cite the SHA.
-  - For claims about `main` read from a shared checkout, cite `origin/main`'s SHA, or read with `git show origin/main:<path>`.
-  - Before calling a commit part of `main`'s history, check `git branch -r --contains <sha>`: `git log -S` and `--all` also list commits from side branches.
+  - Before claiming anything about unmerged branch state, fetch the PR head and cite its SHA.
+  - For claims about `main` read from a shared checkout, cite `origin/main`'s SHA, or read from `origin/main` rather than the working tree.
+  - Before calling a commit part of `main`'s history, check that `main` contains it: some searches also list commits from side branches.
   - Before arguing that a change is safe or that it changes behaviour, say what `main` does today, read from `main`, not inferred.
+  - The `github` skill (`skills/github/SKILL.md`) gives the commands.
   - Why: local remote-tracking refs go stale, and shared checkouts move under open threads. An "inconsistency" once came from a stale ref, and a cited file had gone by the next read. Side-branch commits were once listed as `main`'s history, and a behaviour was said to be on `main` already when it wasn't, until a person asked what `main` did before our work.
 - **Link a reviewer to what changed since their review.**
-  - Start from the commit they reviewed: their latest review's `commit_id` in `gh api repos/<owner>/<repo>/pulls/<n>/reviews`. If the branch was rebased since, use that commit's rebased copy, found by subject line in `git log --format='%h %s' origin/main..origin/<branch>`.
-  - Link `https://github.com/<owner>/<repo>/pull/<n>/changes/<start>..<head>`. The range leaves out the start commit's own changes, and the end must be a SHA (a branch name gives a 404), so refresh it after each push. `compare/<start>...<branch>` follows the branch but can't take PR comments.
+  - When asking someone to review again, link them to the changes since the commit they last reviewed, or since its rebased copy if the branch was rebased since.
+  - The `github` skill (`skills/github/SKILL.md`) gives the link's form and how to find where it starts.
   - Why: on one PR every review was on a commit that a rebase had since replaced. A link from the old commit showed 121 files; one from its rebased copy showed the 10 that had changed.
 
 ## Writing
@@ -361,19 +358,17 @@ Our words for Claude Code's moving parts:
 - **Return PR review findings in chat.** Post reviews or comments on a PR only when told to. Why: what reaches colleagues from the person's account is read as theirs, so they have to choose which findings to pass on and put them in their own words themselves; and the repos already have review bots.
 - **Cite each finding's evidence at its commit,** as Links and references asks for a file cited as evidence: its absolute path at that commit, and its pinned GitHub URL. A review is where repo paths come most readily, from `git grep`, the PR's file list and findings tools, so this is where the rule is easiest to miss.
 - **Anchoring findings on the PR.**
-  - When the person wants findings on the PR itself, post them as a pending review: a `gh api` POST to the PR's `reviews` endpoint with no `event` field (`gh pr review` can't make one).
-  - Only the person sees it until they submit it, but edits made while it's pending show as "edited", with history, once it's submitted.
-  - Inline comments take `path`, `line` and `side`, and must land on lines in the diff.
-  - Submitting it from GitHub's page keeps only the text in the "Finish your review" box as its summary, so an empty box loses a summary posted through the API. When handing it over, tell the person to paste the summary into that box, and give them its text. Once they've submitted, check the review's `body`, and offer to post a lost summary as a separate review of type comment.
+  - When the person wants findings on the PR itself, post them as a pending review, which only they see until they submit it.
+  - Submitting from GitHub's page keeps only the summary typed there, so a summary posted through the API is lost unless the person pastes it in. When handing it over, give them its text, and check afterwards that it survived.
+  - The `github` skill (`skills/github/SKILL.md`) gives the steps.
   - Why: a long summary, with its tables, was once lost this way, while its inline comments survived.
-- **Before saying what a review comment is about, check its anchor:** `gh api repos/<owner>/<repo>/pulls/comments/<id> --jq '{original_start_line, original_line, line, subject_type}'`.
-  - The diff excerpt shown above a comment (`diff_hunk`) is context; a single-line comment is on the excerpt's last line.
-  - Only a non-null `start_line` or `original_start_line` marks a multi-line selection.
-  - A null `line` means the comment is outdated: read `original_line` at `original_commit_id`.
+- **Before saying what a review comment is about, check its anchor:** the line it's attached to, rather than the diff excerpt shown above it.
   - If the text fits a nearby line better, ask the commenter.
+  - The `github` skill (`skills/github/SKILL.md`) gives the command, and how to read what it returns.
   - Why: a comment was once attributed to a row three lines above its anchor.
-- **Read a PR's description with its reviews** (`gh pr view <n> --json body`).
-  - Cursor Bugbot posts no review or comment. It appends its summary and risk rating to the description, between `<!-- CURSOR_SUMMARY -->` and `<!-- /CURSOR_SUMMARY -->`, with a line naming the commit it reviewed, so `gh api …/pulls/<n>/reviews` and `…/comments` miss it.
+- **Read a PR's description with its reviews.**
+  - A review bot may write its summary into the description rather than posting a review or comment, as Cursor Bugbot does, so the review APIs miss it.
+  - The `github` skill (`skills/github/SKILL.md`) says where to look.
   - Why: on one PR, the review APIs showed only two other bots.
 - **When the person has posted comments,** check suggestion-block anchors and companion changes before saying the wording is fine.
 - **A finding is a hypothesis.**
