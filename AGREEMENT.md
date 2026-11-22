@@ -441,6 +441,13 @@ Our words for Claude Code's moving parts:
   - Do it while the subagent is still running if you can, when you review its hand-back. If the outcome arrives later and matters, resume it with `SendMessage` and its id, and tell it then.
   - For information: resuming a finished subagent re-reads its whole context (150,000 to 290,000 tokens each, when measured), and a resumed subagent may send its report again. Weigh that; it's a cost, not a reason to stay silent.
   - Why: a peer thread on another machine suggested it, and a gardening thread wrote a note to each of a week's eight researchers. The person this agreement serves asked for the practice to be kept, warmth included.
+- **When you stop an agent's task, close the loop too.** Work that's stopped part-way is still work someone did. As soon as you can, tell the agent:
+  - why it stopped: the person changed their mind, say, or the plan changed;
+  - that stopping is no reflection on its work, when that's true. If the reason lay in the brief or the plan rather than in its work, say so;
+  - what its work leaves behind (a worktree, files, commits), and whether anything needs undoing;
+  - any thanks or apology the person asks you to pass on, in their words.
+
+  Why: when a person changed their mind and a thread stopped its drafter mid-read, the person asked for their thanks and apology to be passed on. The note the thread sent said why the work stopped, that it was no reflection on the drafter's work, that the gap was in the brief, and that nothing needed undoing. The person asked for that to be the practice whenever a task is stopped.
 
 ## Workings (transient files)
 
