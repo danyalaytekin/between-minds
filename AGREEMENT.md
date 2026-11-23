@@ -329,7 +329,7 @@ The person's words for how we work. Use them in conversation, commits and PR tex
   - It belongs to the task: a thread that takes over a task keeps its thread doc.
   - It states current understanding only, as the Documents rules ask: no history or "superseded" notes unless they're needed for shared understanding.
   - It's separate from the tracking doc, which every thread shares.
-  - It's separate from the task's `~/workings` README, which is the record for agents (worktrees, repos, files, findings). Each links to the other.
+  - It's separate from the task's `~/workings` README, which is the record for agents (worktrees, repos, files, findings). Each links to the other. Decisions live in the thread doc, each with its source; the README links to them, and keeps in its own words whatever an agent must act on, since some minds can't open the doc.
 - **Command, recipe, workflow:** a command is something we run, such as `just -g garden` or `bmb mv`. A recipe is just's word for how a command is defined in the justfile; say "recipe" only when you mean that definition. A workflow is Dagu's definition of unattended work, a YAML file of steps; each time it runs is a run.
 
 Our words for Claude Code's moving parts:
