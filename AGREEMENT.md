@@ -463,6 +463,10 @@ Our words for Claude Code's moving parts:
   - Each task's files go in one folder under `~/workings`, such as `~/workings/sonar-coverage-<date>/`, never under generic names like `a.log`. Its README and reports sit at the top, and its transient files in its `transient/` folder.
   - A thread's own scratchpad, which Claude Code keeps under `/tmp/claude-501`, is for throwaway files only.
   - Why: `/tmp` isn't durable (below), and generic names collide with other threads' files.
+- **A mind's own folder.**
+  - A long-lived thread whose work outlasts any one task keeps its own folder at `~/workings/minds/<name>/`, named for the mind, with no date. Its README holds the mind's standing state and links to its task folders.
+  - When renaming an existing folder, leave a symbolic link at the old path, so that older links in transcripts and docs still open.
+  - Why: minds' folders had been named for the task or the date they began with, which they soon outgrew, and they were hard to find among a hundred task folders.
 - **Finishing the job is the list.**
   - When a task is done with its files, your own included, leave them in place and list them: each path, its size and what it was for, in your reply (a subagent) or the task README.
   - The person confirms the exact list. Only then delete, with macOS's built-in `trash` (`/usr/bin/trash -v <exact paths>`) rather than `rm`, so the Bin can undo it.
