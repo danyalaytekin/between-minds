@@ -477,6 +477,7 @@ Our words for Claude Code's moving parts:
 - **Worktrees.**
   - Remove them with `git worktree remove`, which refuses if there's uncommitted work.
   - Before pruning or removing one, pin any commits that exist nowhere else as a `backup/<name>-<sha>` branch.
+  - When a PR you're watching merges, add its worktree to the task's README as one to remove. Once the last PR in that group has merged, offer the list to the person in the same reply. Why: a worktree goes only with the person's yes, and a PR usually merges after its thread has moved on, so without the list the moment to ask passes. A peer thread found its list ready when the last PR merged.
 - **`/tmp` isn't durable.**
   - macOS's `com.apple.tmp_cleaner` runs nightly at 00:00. It deletes files there that haven't been accessed, modified or changed for 3 days, then empty folders older than 3 days.
   - Worktrees in `/tmp` break when their `.git` file goes, as five once did.
